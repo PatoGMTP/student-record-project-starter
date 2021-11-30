@@ -31,6 +31,38 @@ Student
     Add a button that sorts teh data based on Course (ascending order)
 */
 
+
+type StudentData = 
+{
+    first_name: string,
+    last_name: string,
+    course: string,
+    grade: number | string,
+}
+
+const initial_data: StudentData[] = [];
+
+const names: [string, string][] = [["John", "Arbuckle"], ["Sally", "Holmes"], ["Carl", "Wheezer"], ["Kim", "Possible"]];
+const grades: [number[], string[]] = [[100, 95, 90, 88, 84, 80, 78, 74, 70, 68, 64, 60, 50], ["A", "B", "C", "A+", "B+", "C+", "A-", "B-", "C-"]];
+const courses: string[] = ["ENG 101", "MTH 101", "CHM 101", "ART 101"];
+
+for (let i = 0; i < 10; i++)
+{
+    let name = names[Math.floor(Math.random()*names.length)];
+    let oneOrZero = (Math.random()>=0.5)? 1 : 0;
+    let grade = grades[oneOrZero][Math.floor(Math.random()*grades[oneOrZero].length)];
+    let course = courses[Math.floor(Math.random()*courses.length)];
+
+    initial_data.push(
+        {
+            first_name: name[0],
+            last_name: name[1],
+            course: course,
+            grade: grade,
+        }
+    )
+}
+
 interface StudentInt
 {
     first_name: string,
@@ -66,8 +98,27 @@ class Student implements StudentInt
     }
 
     static minimum_grade: number = 70;
+
+    static number_to_letter(grade: number): string
+    {
+        if (grade >= 96) return "A+";
+        if (grade >= 93) return "A";
+        if (grade >= 90) return "A-";
+        if (grade >= 86) return "B+";
+        if (grade >= 83) return "B";
+        if (grade >= 80) return "B-";
+        if (grade >= 76) return "C+";
+        if (grade >= 73) return "C";
+        if (grade >= 70) return "C-";
+        if (grade >= 66) return "D+";
+        if (grade >= 63) return "D";
+        if (grade >= 60) return "D-";
+        return "F";
+    }
+
     is_passing: boolean;
     grade_int: number;
+    grade_letter: string;
 
     constructor (public first_name: string, public last_name: string, public course: string, public grade: number | string)
     {
@@ -78,9 +129,14 @@ class Student implements StudentInt
     {
         if (typeof this.grade === "string")
         {
-            this.grade_int = Student.letter_to_number.get(this.grade.toUpperCase())
+            this.grade_int = Student.letter_to_number.get(this.grade.toUpperCase());
+            this.grade_letter = this.grade;
         }
-        else this.grade_int = this.grade;
+        else
+        {
+            this.grade_int = this.grade;
+            this.grade_letter = Student.number_to_letter(this.grade);
+        }
 
         this.is_passing = this.grade_int >= Student.minimum_grade;
     }
