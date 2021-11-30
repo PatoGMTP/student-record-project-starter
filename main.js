@@ -1,97 +1,5 @@
-"use strict";
-class Student {
-    constructor(first_name, last_name, course, grade) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.course = course;
-        this.grade = grade;
-        this.is_passing = false;
-        this.grade_int = -1;
-        this.grade_letter = "";
-        this.check_passing();
-    }
-    // static letter_to_number: Map<string, number> = new Map();
-    // static
-    // {
-    //     this.letter_to_number.set("A+", 100);
-    //     this.letter_to_number.set("A", 95);
-    //     this.letter_to_number.set("A-", 90);
-    //     this.letter_to_number.set("B+", 88);
-    //     this.letter_to_number.set("B", 84);
-    //     this.letter_to_number.set("B-", 80);
-    //     this.letter_to_number.set("C+", 78);
-    //     this.letter_to_number.set("C", 74);
-    //     this.letter_to_number.set("C-", 70);
-    //     this.letter_to_number.set("D+", 68);
-    //     this.letter_to_number.set("D", 64);
-    //     this.letter_to_number.set("D-", 60);
-    //     this.letter_to_number.set("F", 50);
-    // }
-    static letter_to_number(letter) {
-        switch (letter) {
-            case "A+": return 100;
-            case "A": return 95;
-            case "A-": return 90;
-            case "B+": return 88;
-            case "B": return 84;
-            case "B-": return 80;
-            case "C+": return 78;
-            case "C": return 74;
-            case "C-": return 70;
-            case "D+": return 68;
-            case "D": return 64;
-            case "D-": return 60;
-            default: return 50;
-        }
-    }
-    static number_to_letter(grade) {
-        if (grade >= 96)
-            return "A+";
-        if (grade >= 93)
-            return "A";
-        if (grade >= 90)
-            return "A-";
-        if (grade >= 86)
-            return "B+";
-        if (grade >= 83)
-            return "B";
-        if (grade >= 80)
-            return "B-";
-        if (grade >= 76)
-            return "C+";
-        if (grade >= 73)
-            return "C";
-        if (grade >= 70)
-            return "C-";
-        if (grade >= 66)
-            return "D+";
-        if (grade >= 63)
-            return "D";
-        if (grade >= 60)
-            return "D-";
-        return "F";
-    }
-    check_passing() {
-        if (typeof this.grade === "string") {
-            this.grade_int = Student.letter_to_number(this.grade.toUpperCase());
-            this.grade_letter = this.grade;
-        }
-        else {
-            this.grade_int = this.grade;
-            this.grade_letter = Student.number_to_letter(this.grade);
-        }
-        this.is_passing = this.grade_int >= Student.minimum_grade;
-    }
-    update_grade(grade) {
-        this.grade = grade;
-        this.check_passing();
-    }
-    get_data() {
-        return [this.first_name, this.last_name, this.course, this.grade_letter, (+this.is_passing).toString()];
-    }
-}
-Student.passing_grades = ["A", "B", "C", "A+", "B+", "C+", "A-", "B-", "C-"];
-Student.minimum_grade = 70;
+import { Student } from './Student.js';
+import { generateData } from './Student_Data.js';
 document.addEventListener("DOMContentLoaded", main);
 const header_text_arr = ["First Name", "Last Name", "Course", "Grade", "Passing?"];
 var header_enum;
@@ -127,20 +35,6 @@ function main() {
         students.push(new Student(item.first_name, item.last_name, item.course, item.grade));
     }
     makeList();
-    data_rows.forEach(item => item.addEventListener("dblclick", evt => {
-        // console.log(evt.target);
-        // let input = document.createElement("input");
-        // let button = document.createElement("button");
-        data_rows = data_rows.filter(row => row !== item);
-        renderTable();
-    }));
-    // table.style.width = "100%";
-    // const div: HTMLDivElement = document.createElement("div");
-    // const table_static: HTMLTableElement = document.createElement("table");
-    // table_static.appendChild(header_row);
-    // div.appendChild(table_static);
-    // div.appendChild(table);
-    // document.body.appendChild(div);
     document.body.appendChild(table);
     renderTable();
 }
@@ -231,29 +125,6 @@ function sortStudents(input) {
             break;
     }
 }
-function generateData() {
-    const initial_data = [];
-    const names = [["John", "Arbuckle"], ["Sally", "Holmes"], ["Carl", "Wheezer"], ["Kim", "Possible"]];
-    const grades = [[100, 95, 90, 88, 84, 80, 78, 74, 70, 68, 64, 60, 50], ["A", "B", "C", "A+", "B+", "C+", "A-", "B-", "C-"]];
-    const courses = ["ENG 101", "MTH 101", "CHM 101", "ART 101"];
-    for (let i = 0; i < names.length; i++) {
-        // let name = names[Math.floor(Math.random()*names.length)];
-        // let course = courses[Math.floor(Math.random()*courses.length)];
-        let name = names[i];
-        for (let j = 0; j < courses.length; j++) {
-            let course = courses[j];
-            let oneOrZero = (Math.random() >= 0.5) ? 1 : 0;
-            let grade = grades[oneOrZero][Math.floor(Math.random() * grades[oneOrZero].length)];
-            initial_data.push({
-                first_name: name[0],
-                last_name: name[1],
-                course: course,
-                grade: grade,
-            });
-        }
-    }
-    return initial_data;
-}
 function makeList() {
     data_rows = [];
     for (const student of students) {
@@ -291,7 +162,6 @@ function makeList() {
         arr.forEach(item => item.classList.add("data"));
         arr.forEach((item, i) => item.innerHTML = data[i]);
         arr.forEach((item, i) => item.setAttribute("data-value", data[i]));
-        // let v = &#10071;
         grade.setAttribute("data-value", student.grade_int.toString());
         if (student.is_passing)
             passing.innerHTML = "&#9989;";
@@ -302,4 +172,8 @@ function makeList() {
         arr.forEach(item => row.appendChild(item));
         data_rows.push(row);
     }
+    data_rows.forEach(item => item.addEventListener("dblclick", evt => {
+        data_rows = data_rows.filter(row => row !== item);
+        renderTable();
+    }));
 }
