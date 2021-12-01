@@ -7,8 +7,23 @@
 
 body
 {
-    display: flex;
+    display: grid;
+    grid-template-rows: auto 1fr;
     /* flex-flow: column; */
+}
+
+a
+{
+    text-align: center;
+    color: navy;
+    font-size: 20px;
+    padding: .5rem;
+}
+
+div
+{
+    display: flex;
+    justify-content: center;
 }
 
 table
@@ -16,17 +31,47 @@ table
     flex: 1;
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    margin: 1rem;
+    margin: 0rem 1rem 1rem;
+    table-layout: fixed;
+    width: 100%;
+    max-width: 900px;
 }
 
-tr:not(:first-child):hover
+input
+{
+    border: 0;
+}
+
+tr:not(:last-child):nth-child(2n+1)
+{
+    background-color: #f2f2f2;
+}
+
+tr:not(:first-child):not(:last-child):hover
 {
     background-color: #ddd;
 }
 
-tr:not(:first-child):active
+tr:not(:first-child):not(:last-child):active
 {
     background-color: rgb(148, 177, 255);
+}
+
+tr:last-child> td:last-child
+{
+    text-align: center;
+    color: navy;
+    font-weight: bold;
+}
+
+tr:last-child> td:last-child:hover
+{
+    background-color: lightgreen;
+}
+
+tr:last-child > td:last-child:active
+{
+    background-color: green;
 }
 
 th, td
@@ -39,20 +84,6 @@ th
 {
     position: sticky;
     top: 0;
-}
-
-/* tr:first-child
-{
-    position: sticky;
-} */
-
-/* table:first-child
-{
-    position: sticky;
-} */
-
-th
-{
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;

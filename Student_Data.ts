@@ -6,14 +6,18 @@ type StudentData =
     grade: number | string,
 }
 
+export const courses: string[] = ["ENG 101", "MTH 101", "CHM 101"]; //, "ART 101"];
+
+export const valid_grades: string[] = ["A", "B", "C", "A+", "B+", "C+", "A-", "B-", "C-", "D+", "D", "D-", "F"];
+
 export function generateData(): StudentData[]
 {
 
     const initial_data: StudentData[] = [];
 
     const names: [string, string][] = [["John", "Arbuckle"], ["Sally", "Holmes"], ["Carl", "Wheezer"], ["Kim", "Possible"]];
-    const grades: [number[], string[]] = [[100, 95, 90, 88, 84, 80, 78, 74, 70, 68, 64, 60, 50], ["A", "B", "C", "A+", "B+", "C+", "A-", "B-", "C-"]];
-    const courses: string[] = ["ENG 101", "MTH 101", "CHM 101", "ART 101"];
+    const grades: [number[], string[]] = [[100, 95, 90, 88, 84, 80, 78, 74, 70, 68, 64, 60, 50], valid_grades];
+    // const courses: string[] = ["ENG 101", "MTH 101", "CHM 101", "ART 101"];
 
     for (let i = 0; i < names.length; i++)
     {
